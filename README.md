@@ -38,3 +38,63 @@ Stops any existing container and runs a new instance of the application.
 ---
 
 ## 🔁 CI/CD Flow
+
+
+---
+
+## 🐳 Docker Commands Used
+- docker build
+- docker run
+- docker stop
+- docker rm
+
+---
+
+## 📦 How to Run Locally
+
+```bash
+git clone https://github.com/Abdel-3ziz/CI-CD-Pipeline-with-Jenkins-and-Docker.git
+cd CI-CD-Pipeline-with-Jenkins-and-Docker
+
+docker build -t devops-app .
+docker run -d -p 5000:5000 devops-app
+⚙️ Jenkins Pipeline Script
+node {
+
+    stage('Clone') {
+        echo "Cloning repository..."
+
+        git branch: "main",
+            url: "https://github.com/Abdel-3ziz/CI-CD-Pipeline-with-Jenkins-and-Docker.git"
+    }
+
+    stage('Build') {
+        echo 'Building Docker Image...'
+        sh 'docker build -t devops-app .'
+    }
+
+    stage('Run') {
+        echo 'Running container...'
+
+        sh '''
+            docker stop devops-app-container || true
+            docker rm devops-app-container || true
+            docker run -d -p 5000:5000 --name devops-app-container devops-app
+        '''
+    }
+}
+📸 Pipeline Flow
+GitHub Repo
+     │
+     ▼
+   Jenkins
+     │
+     ├── Clone Stage
+     ├── Build Stage
+     └── Run Stage
+     │
+     ▼
+Docker Container 🚀
+👨‍💻 Author
+
+Abdelaziz - DevOps Enthusiast
